@@ -2,4 +2,11 @@
 *.o
 *.swp
 *.swo
-
+*.obj
+*.tlog
+/build/VisualStudio/Debug/*
+/build/VisualStudio/Release/*
+/build/VisualStudio/.vs/*
+*autom4te.cache/*
+*.deps/*
+/src/xpu-0.1.5/m4/*

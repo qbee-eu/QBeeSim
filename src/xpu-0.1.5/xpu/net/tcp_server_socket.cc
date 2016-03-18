@@ -1,3 +1,6 @@
+#ifdef _MSC_VER
+#include <xpu/net/tcp_server_socket.h>
+#endif // !_MSC_VER
 
 
 tcp_server_socket::tcp_server_socket(unsigned short local_port, 

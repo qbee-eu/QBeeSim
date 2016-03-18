@@ -28,11 +28,17 @@
 #ifndef __XPU_RANGE_H__
 #define __XPU_RANGE_H__
 
+
 #include <vector>
 
 #include <xpu/stdout.h>
 #include <xpu/utils.h>
 #include <xpu/lockable.h>
+
+#ifdef _MSC_VER
+#pragma warning( disable : 4522)
+#endif // _MSC_VER
+
 
 #ifndef __xpu_use_hard_lock__
 #ifdef  __xpu_use_spinlock__
@@ -89,7 +95,11 @@ namespace xpu
 	    m = new mutex(); 
 #endif
 #endif
-	    if ((max-min) >= core::workers_count) 
+#ifdef _MSC_VER
+        if ((max - min) >= static_cast<int>(core::workers_count))
+#else
+        if ((max - min) >= core::workers_count)
+#endif // _MSC_VER
 		  subrange_length = (max-min)/core::workers_count;
 	    else 
 		  subrange_length = step;
@@ -99,7 +109,11 @@ namespace xpu
 	 inline int end()   { return max; }
 	 inline int init()  
 	 {  
-	    if ((max-min) > core::workers_count) 
+#ifdef _MSC_VER
+         if ((max - min) >= static_cast<int>(core::workers_count))
+#else
+         if ((max - min) >= core::workers_count)
+#endif // _MSC_VER
 		  subrange_length = (max-min)/core::workers_count;
 	    else 
 		  subrange_length = step;
@@ -116,8 +130,11 @@ namespace xpu
 	    min   = sr.min;
 	    max   = sr.max;
 	    step  = sr.step;
-
-	    if ((max-min) > core::workers_count) 
+#ifdef _MSC_VER
+        if ((max - min) >= static_cast<int>(core::workers_count))
+#else
+        if ((max - min) >= core::workers_count)
+#endif // _MSC_VER
 		  subrange_length = (max-min)/core::workers_count;
 	    else 
 		  subrange_length = step;

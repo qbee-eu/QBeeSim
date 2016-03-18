@@ -30,9 +30,12 @@
 #ifndef __XPU_BARRIER_H__
 #define __XPU_BARRIER_H__
 
+#ifdef _MSC_VER
+#include <pthread/include/pthread.h>
+#else
 #include <pthread.h>
-
 #include "mac_osx_pthread.h"
+#endif
 
 #include <xpu/types.h>
 
@@ -95,6 +98,8 @@ namespace xpu
    } // namespace core
 } // namespace xpu
 
+#ifndef _MSC_VER
 #include "barrier.cc"
+#endif // !_MSC_VER
 
 #endif // __XPU_BARRIER_H__  

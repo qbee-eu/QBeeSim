@@ -26,17 +26,26 @@
  * GNU General Public License for more details.
  *
  */
-
+//#pragma message  ("Compiling pointers.h started!!!")
 
 #ifndef __XPU_POINTERS_79424B4E0A_H__
 #define __XPU_POINTERS_79424B4E0A_H__
 
-
-
+//#pragma message  ("Including <algorithm> in pointers.h  ~~~")
 #include <algorithm>
+//#pragma message  ("Including <set> in pointers.h  ~~~")
 #include <set>
 
+#ifdef _MSC_VER
+#include <iterator>
+#endif // _MSC_VER
+
+
+
+//#pragma message  ("Including <xpu/stdout.h> in pointers.h  ~~~")
 #include <xpu/stdout.h>
+
+//#pragma message  ("pointers.h compiled!!!")
 
 namespace xpu
 {

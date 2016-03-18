@@ -1,6 +1,6 @@
 /**
  * @file		pointers.cc
- * @author	Nader KHAMMASSI - nader.khammassi@gmail.com 
+ * @author	Nader KHAMMASSI - nader.khammassi@gmail.com
  * @date		29-10-11
  * @brief		smart pointer container
  * @copyright
@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2014 Nader Khammassi, All Rights Reserved.
  *
- * This file is part of XPU and has been downloaded from 
+ * This file is part of XPU and has been downloaded from
  * http://www.xpu-project.net/.
  *
  * XPU is free software: you can redistribute it and/or modify
@@ -24,8 +24,17 @@
  *
  */
 
+//#pragma message  ("Compiling pointers.cc started!!!")
 
+#if _MSC_VER
+//#include <iterator>
+#include <xpu/pointers.h>
+using namespace xpu;
+#endif // _MSC_VER
 
+//#pragma message  ("pointers.cc compiled!!!")
+
+#ifndef _MSC_VER
 pointers:: pointers()
 {
 }
@@ -38,25 +47,25 @@ pointers:: add(shareable * p)
    insert((pointer)p);
 }
 
-template<typename __T> 
+template<typename __T>
 void
 pointers:: add(__T * p)
 {
   insert((pointer)p);
 }
 
-template<typename __T> 
+template<typename __T>
 void
 pointers:: add(const __T * p)
 {
    return;
 }
 
-template<typename __T> 
+template<typename __T>
 void
 pointers:: add(__T p)
 {
-  return; 
+  return;
 }
 
 
@@ -68,24 +77,24 @@ pointers:: remove(shareable * p)
 }
 
 template<typename __T>
-void 
+void
 pointers:: remove(__T * p)
-{ 
-   erase((pointer)p); 
+{
+   erase((pointer)p);
 }
 
 template<typename __T>
 void
 pointers:: remove(const __T * p)
-{ 
-   return; 
+{
+   return;
 }
 
 template<typename __T>
 void
 pointers:: remove(__T p)
-{ 
-   return; 
+{
+   return;
 }
 
 template<typename __T>
@@ -111,51 +120,51 @@ pointers:: contains(__T p)
 
 // operation between pointer sets
 
-pointers & 
+pointers &
 pointers:: operator -= (const pointers & ptrs)
 {
    //erase(ptrs.begin(), ptrs.end());
    pointers res;
-   set_difference(begin(), end(), 
-				ptrs.begin(), ptrs.end(), 
+   set_difference(begin(), end(),
+				ptrs.begin(), ptrs.end(),
 				std::inserter(res, res.begin()) );
    *this = res;
    return *this;
 }
 
-pointers & 
+pointers &
 pointers:: operator += (const pointers & ptrs)
 {
    insert(ptrs.begin(), ptrs.end());
    return *this;
 }
 
-pointers & 
+pointers &
 pointers:: operator *= (const pointers & ptrs)
 {
    pointers res;
-   set_intersection(begin(), end(), 
-				ptrs.begin(), ptrs.end(), 
+   set_intersection(begin(), end(),
+				ptrs.begin(), ptrs.end(),
 				std::inserter(res, res.begin()) );
    *this = res;
    return *this;
 }
 
-pointers 
+pointers
 pointers:: operator + (const pointers & ptrs)
 {
    pointers res = pointers(*this);
    return ( res += ptrs);
 }
 
-pointers 
+pointers
 pointers:: operator - (const pointers & ptrs)
 {
    pointers res = pointers(*this);
    return ( res -= ptrs);
 }
 
-pointers 
+pointers
 pointers:: operator * (const pointers & ptrs)
 {
    pointers res = pointers(*this);
@@ -165,7 +174,7 @@ pointers:: operator * (const pointers & ptrs)
 // fast pointer insert/erase
 
 template<typename __T>
-pointers & 
+pointers &
 pointers:: operator -= (__T * ptr)
 {
    remove(ptr);
@@ -173,7 +182,7 @@ pointers:: operator -= (__T * ptr)
 }
 
 template<typename __T>
-pointers & 
+pointers &
 pointers:: operator += (__T * ptr)
 {
    add(ptr);
@@ -181,7 +190,7 @@ pointers:: operator += (__T * ptr)
 }
 
 template<typename __T>
-pointers 
+pointers
 pointers:: operator + (__T * ptr)
 {
    pointers res = pointers(*this);
@@ -189,10 +198,11 @@ pointers:: operator + (__T * ptr)
 }
 
 template<typename __T>
-pointers 
+pointers
 pointers:: operator - (__T * ptr)
 {
    pointers res = pointers(*this);
    return ( res -= ptr);
 }
 
+#endif _MSC_VER

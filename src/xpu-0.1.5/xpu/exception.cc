@@ -25,8 +25,7 @@
  *
  */
 
-
-
+#ifndef _MSC_VER
 
 /**
  * exception implementation
@@ -60,3 +59,4 @@ const char *exception::what() const throw()
   return user_message.c_str();
 }
 
+#endif // _MSC_VER

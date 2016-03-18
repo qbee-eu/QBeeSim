@@ -32,7 +32,18 @@
 
 
 #include <iostream>
+
+#ifdef _MSC_VER
+#include <pthread/include/pthread.h>
+#else
 #include <pthread.h>
+#endif // _MSC_VER
+
+#ifdef _MSC_VER
+//#include <Winnt.h>
+#include <windows.h>
+#define __sync_bool_compare_and_swap(a, b, c) InterlockedCompareExchange(a, b, c)
+#endif _MSC_VER
 
 #include <cerrno>
 
@@ -51,7 +62,11 @@ namespace xpu
 	    typedef int pthread_spinlock_t;
 
 	    int pthread_spin_init(pthread_spinlock_t *lock, int pshared) {
-	       __asm__ __volatile__ ("" ::: "memory");
+#ifdef _MSC_VER
+            MemoryBarrier();
+#else
+            __asm__ __volatile__("" ::: "memory");
+#endif // _MSC_VER
 	       *lock = 0;
 	       return 0;
 	    }
@@ -64,8 +79,12 @@ namespace xpu
 	       while (1) {
 		  int i;
 		  for (i=0; i < 10000; i++) {
-		     if (__sync_bool_compare_and_swap(lock, 0, 1)) {
-			return 0;
+#ifdef _MSC_VER
+              if (InterlockedCompareExchange((volatile long *)lock, long(0), long(1))) {
+#else
+              if (__sync_bool_compare_and_swap(lock, 0, 1)) {
+#endif // _MSC_VER
+			    return 0;
 		     }
 		  }
 		  sched_yield();
@@ -73,14 +92,22 @@ namespace xpu
 	    }
 
 	    int pthread_spin_trylock(pthread_spinlock_t *lock) {
-	       if (__sync_bool_compare_and_swap(lock, 0, 1)) {
+#ifdef _MSC_VER
+            if (InterlockedCompareExchange((volatile long *)lock, long(0), long(1))) {
+#else
+            if (__sync_bool_compare_and_swap(lock, 0, 1)) {
+#endif // _MSC_VER
 		  return 0;
 	       }
 	       return EBUSY;
 	    }
 
 	    int pthread_spin_unlock(pthread_spinlock_t *lock) {
-	       __asm__ __volatile__ ("" ::: "memory");
+#ifdef _MSC_VER
+            MemoryBarrier();
+#else
+            __asm__ __volatile__("" ::: "memory");
+#endif // _MSC_VER
 	       *lock = 0;
 	       return 0;
 	    }
@@ -110,8 +137,9 @@ namespace xpu
    } // namespace core
 } // namespace xpu
 
-  #include <xpu/core/os/spinlock.cc>
-
+#ifndef _MSC_VER
+    #include <xpu/core/os/spinlock.cc>
+#endif // !_MSC_VER
 
 #endif
 

@@ -36,8 +36,8 @@
 #include <Carbon/Carbon.h>  // carbon apis for multiprocessing 
 #elif defined(__hpux)
 #include <sys/mpctl.h>      // hp-ux multiprocessing headers 
-#else                       // windows not supported yet
-#error "xpu::system::processor : platform not supported ! (this version support only unix-like platform)"
+#else                       
+#include <xpu/win_system_info.h>   // windows
 #endif
 
 /**

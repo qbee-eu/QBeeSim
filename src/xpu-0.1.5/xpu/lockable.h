@@ -28,7 +28,11 @@
 #ifndef __XPU_LOCKABLE_79424B4E0A_H__
 #define __XPU_LOCKABLE_79424B4E0A_H__
 
+#ifdef _MSC_VER
+#include <pthread/include/pthread.h>
+#else
 #include <pthread.h>
+#endif // _MSC_VER
 
 namespace xpu
 {

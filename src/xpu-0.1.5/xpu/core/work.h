@@ -28,9 +28,12 @@
 #ifndef __XPU_WORK_H__
 #define __XPU_WORK_H__
 
+//#pragma message (__FILE__ ": include xpu/task.h")
 #include <xpu/task.h>
+//#pragma message (__FILE__ ": include xpu/range.h")
 #include <xpu/range.h>
 
+//#pragma message (__FILE__ ": include xpu/core/os/event.h")
 #include <xpu/core/os/event.h>
 
 namespace xpu

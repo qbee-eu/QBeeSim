@@ -4,7 +4,7 @@
  *
  * Copyright (C) 2014 Nader Khammassi, All Rights Reserved.
  *
- * This file is part of XPU and has been downloaded from 
+ * This file is part of XPU and has been downloaded from
  * http://www.xpu-project.net/.
  *
  * XPU is free software: you can redistribute it and/or modify
@@ -17,48 +17,96 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-  
+
+#ifdef _MSC_VER
+#include <xpu/core/lockable_factory.h>
+
+xpu::core::lockable_factory* xpu::core::lockable_factory::m_instance = NULL;
+
+xpu::core::lockable_factory * xpu::core::lockable_factory::instance()
+{
+    if (m_instance)
+        return m_instance;
+    else
+        return (m_instance = new xpu::core::lockable_factory());
+}
+
+xpu::core::lockable_factory::~lockable_factory()
+{
+    m_instance = NULL;
+    // destroy mutexes ...
+    for (std::map<pointer, xpu::lockable*>::iterator it = m_shared.begin(); it != m_shared.end(); it++)
+    {
+        delete (*it).second;
+    }
+}
+
+
+
+xpu::lockable *
+xpu::core::lockable_factory::getlockable(pointer p)
+{
+    std::map<pointer, xpu::lockable*>::iterator it;
+    if ((it = m_shared.find(p)) != m_shared.end())
+    {
+        return (*it).second;
+    }
+    else
+    {
+#ifdef __XPU_USE_SPINLOCK__
+        xpu::lockable * l = new spinlock();
+#else
+        xpu::lockable * l = new mutex();
+#endif
+        m_shared[p] = l;
+
+        return l;
+    }
+}
+
+#else
    lockable_factory * lockable_factory::m_instance = NULL;
 
-   lockable_factory * lockable_factory::instance() 
+   lockable_factory * lockable_factory::instance()
    {
-     if (m_instance) 
-	   return m_instance; 
-     else 
-	   return (m_instance=new lockable_factory()); 
+       if (m_instance)
+           return m_instance;
+       else
+           return (m_instance = new lockable_factory());
    }
-  
 
-   lockable_factory::~lockable_factory() 
-   { 
-      m_instance = NULL; 
-      // destroy mutexes ...
-      for (std::map<pointer, lockable*>::iterator it = m_shared.begin(); it!= m_shared.end(); it++)
-      {
-        delete (*it).second;
-      }
-   }
- 
-   
 
-   lockable * 
-   lockable_factory::getlockable(pointer p)   
+   lockable_factory::~lockable_factory()
    {
-     std::map<pointer, lockable*>::iterator it;
-     if ((it = m_shared.find(p)) != m_shared.end())
-     {
-       return (*it).second;
-     }
-     else 
-     {
-       #ifdef __XPU_USE_SPINLOCK__
-         lockable * l = new spinlock();
-       #else
-         lockable * l = new mutex();
-       #endif
-       m_shared[p] = l;
+       m_instance = NULL;
+       // destroy mutexes ...
+       for (std::map<pointer, lockable*>::iterator it = m_shared.begin(); it != m_shared.end(); it++)
+       {
+           delete (*it).second;
+       }
+   }
 
-       return l;
-     } 
-   } 
 
+
+   lockable *
+       lockable_factory::getlockable(pointer p)
+   {
+       std::map<pointer, lockable*>::iterator it;
+       if ((it = m_shared.find(p)) != m_shared.end())
+       {
+           return (*it).second;
+       }
+       else
+       {
+#ifdef __XPU_USE_SPINLOCK__
+           lockable * l = new spinlock();
+#else
+           lockable * l = new mutex();
+#endif
+           m_shared[p] = l;
+
+           return l;
+       }
+   }
+
+#endif // _MSC_VER

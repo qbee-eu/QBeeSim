@@ -1,8 +1,8 @@
 /**
  * @file		sequential_tasks.h
- * @author	Nader KHAMMASSI - nader.khammassi@gmail.com 
+ * @author	Nader KHAMMASSI - nader.khammassi@gmail.com
  * @date		29-10-11
- * @brief	     sequential tasks	
+ * @brief	     sequential tasks
  *
  * @copyright
  *
@@ -10,7 +10,7 @@
  *
  * Copyright (C) 2014 Nader Khammassi, All Rights Reserved.
  *
- * This file is part of XPU and has been downloaded from 
+ * This file is part of XPU and has been downloaded from
  * http://www.xpu-project.net/.
  *
  * XPU is free software: you can redistribute it and/or modify
@@ -26,8 +26,8 @@
  */
 
 #ifndef __XPU_SEQUENTIAL_TASKS_2_H__
-#define __XPU_SEQUENTIAL_TASKS_2_H__ 
- 
+#define __XPU_SEQUENTIAL_TASKS_2_H__
+
 #include <xpu/task_group.h>
 //#include <xpu/task.h>
 
@@ -38,14 +38,25 @@ namespace xpu
    class sequential_tasks : public task_group
    {
 	 public:
-	   
+#ifdef _MSC_VER
+         sequential_tasks(task_group ** tasks);
+         ~sequential_tasks();
+         void run(range& r);
+         void run(int i);
+         void run();
+         void detect_shared();
+         pointers get_in_data();
+         pointers get_out_data();
+         void set_shared(pointer p, lockable * l);
+         pointers get_pointers();
+#else
 	   sequential_tasks(task_group ** tasks)
 	   {
 		 for (int i=0; i<N; i++)
 		    m_tasks[i]    = tasks[i];
 		 detect_shared();
 	   }
-	   
+
 	   ~sequential_tasks()
 	   {
 	   }
@@ -71,11 +82,11 @@ namespace xpu
 		 for (int i=0; i<N; i++)
 		    m_tasks[i]->detect_shared();
 	   }
-	   
+
 	   pointers get_in_data()
 	   {
-		 pointers ptrs; 
-		 #pragma unroll
+		 pointers ptrs;
+         #pragma unroll
 		 for (int j=0; j<N; j++)
 		    ptrs += m_tasks[j]->get_in_data();
 		 return ptrs;
@@ -83,8 +94,8 @@ namespace xpu
 
 	   pointers get_out_data()
 	   {
-		 pointers ptrs; 
-		 #pragma unroll
+		 pointers ptrs;
+         #pragma unroll
 		 for (int j=0; j<N; j++)
 		    ptrs += m_tasks[j]->get_out_data();
 		 return ptrs;
@@ -92,7 +103,7 @@ namespace xpu
 
 	   void set_shared(pointer p, lockable * l)
 	   {
-		 #pragma unroll
+         #pragma unroll
 		 for (int i=0; i<N; i++)
 		    m_tasks[i]->set_shared(p,l);
 	   }
@@ -100,23 +111,37 @@ namespace xpu
 	   pointers get_pointers()
 	   {
 		 pointers ptrs;
-		 #pragma unroll
+         #pragma unroll
 		 for (int i=0; i<N; i++)
 		    ptrs += m_tasks[i]->get_pointers();
 		 return ptrs;
 	   }
+#endif // _MSC_VER
 
 	 private:
 
 	   task_group * m_tasks[N];
    };
 
-   /**
+#ifdef _MSC_VER
+
+	task_group * sequential(task_group * t1, task_group * t2);
+	task_group * sequential(task_group * t1, task_group * t2, task_group * t3);
+	task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4);
+	task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5);
+	task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6);
+	task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6, task_group * t7);
+	task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6, task_group * t7, task_group * t8);
+ 	task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6, task_group * t7, task_group * t8, task_group * t9);
+ 	task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6, task_group * t7, task_group * t8, task_group * t9, task_group * t10);
+   
+#else
+    /**
     * sequential tasks builders
     */
    task_group * sequential(task_group * t1, task_group * t2)
    {
-	 task_group * tgs[2]; 
+	 task_group * tgs[2];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 return new sequential_tasks<2>(tgs);
@@ -124,7 +149,7 @@ namespace xpu
 
    task_group * sequential(task_group * t1, task_group * t2, task_group * t3)
    {
-	 task_group * tgs[3]; 
+	 task_group * tgs[3];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 tgs[2] = t3;
@@ -133,7 +158,7 @@ namespace xpu
 
    task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4)
    {
-	 task_group * tgs[4]; 
+	 task_group * tgs[4];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 tgs[2] = t3;
@@ -143,7 +168,7 @@ namespace xpu
 
    task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5)
    {
-	 task_group * tgs[5]; 
+	 task_group * tgs[5];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 tgs[2] = t3;
@@ -154,7 +179,7 @@ namespace xpu
 
    task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6)
    {
-	 task_group * tgs[6]; 
+	 task_group * tgs[6];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 tgs[2] = t3;
@@ -166,7 +191,7 @@ namespace xpu
 
    task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6, task_group * t7)
    {
-	 task_group * tgs[7]; 
+	 task_group * tgs[7];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 tgs[2] = t3;
@@ -179,7 +204,7 @@ namespace xpu
 
    task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6, task_group * t7, task_group * t8)
    {
-	 task_group * tgs[8]; 
+	 task_group * tgs[8];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 tgs[2] = t3;
@@ -193,7 +218,7 @@ namespace xpu
 
    task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6, task_group * t7, task_group * t8, task_group * t9)
    {
-	 task_group * tgs[9]; 
+	 task_group * tgs[9];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 tgs[2] = t3;
@@ -208,7 +233,7 @@ namespace xpu
 
    task_group * sequential(task_group * t1, task_group * t2, task_group * t3, task_group * t4, task_group * t5, task_group * t6, task_group * t7, task_group * t8, task_group * t9, task_group * t10)
    {
-	 task_group * tgs[10]; 
+	 task_group * tgs[10];
 	 tgs[0] = t1;
 	 tgs[1] = t2;
 	 tgs[2] = t3;
@@ -221,7 +246,7 @@ namespace xpu
 	 tgs[9] = t10;
 	 return new sequential_tasks<10>(tgs);
    }
- 
+#endif // _MSC_VER
 
 
 

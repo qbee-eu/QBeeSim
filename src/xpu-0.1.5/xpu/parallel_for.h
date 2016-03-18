@@ -45,7 +45,7 @@ namespace xpu
 	    {
 	       range r(from, to, step);
 		  int len = abs((to-from)/step);
-		  if (len>=core::workers_count)
+		  if (len>=static_cast<int>(core::workers_count))
 		  {
 			m_work_count = core::workers_count; 
 		     rgs = r.split_dec(m_work_count);

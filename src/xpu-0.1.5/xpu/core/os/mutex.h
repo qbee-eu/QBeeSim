@@ -49,18 +49,68 @@ namespace xpu
 		    pthread_mutexattr_t  m_attr;
 
 		public:
-		    inline mutex(void);
-		    inline ~mutex(void);
 
-		    inline void lock();
-		    inline void unlock();
+#ifndef _MSC_VER
+            inline mutex(void) :m_owner(0)
+#else
+            inline mutex(void)
+#endif // !_MSC_VER
+            {
+#ifdef _MSC_VER
+                m_owner.p = NULL;
+                m_owner.x = 0;
+#endif // _MSC_VER
+                pthread_mutexattr_init(&m_attr);
+                pthread_mutex_init(&m_mutex, &m_attr);
+            }
+
+		    inline ~mutex(void)
+            {
+                pthread_mutex_lock(&m_mutex);
+                pthread_mutex_unlock(&m_mutex);
+                pthread_mutex_destroy(&m_mutex);
+            };
+
+		    inline void lock()
+            {
+                pthread_t id = pthread_self();
+                try {
+                    if (pthread_equal(id, m_owner))
+                        throw " thread cannot lock same mutex twice !";
+                    pthread_mutex_lock(&m_mutex);
+                    m_owner = id;
+                }
+                catch (char const * e)
+                {
+                    //cerr << " (x) " <<__FILE__ << ":" << __LINE__ << ":" << __func__ << ": fatal exception : " << e << endl;
+                    //throw e;
+                }
+            };
+		    inline void unlock()
+            {
+                pthread_t id = pthread_self();
+                try {
+                    if (!pthread_equal(id, m_owner))
+                        throw "only thread witch locked the mutex can release it !";
+#ifndef _MSC_VER
+                    m_owner = 0;
+#else
+                    m_owner.p = NULL;
+                    m_owner.x = 0;
+#endif // !_MSC_VER
+
+
+                    pthread_mutex_unlock(&m_mutex);
+                }
+                catch (char const * e)
+                {
+                    // cerr << " (x) " << __FILE__ << ":" << __LINE__ << ":" << __func__ << ": fatal exception : " << e << endl;
+                }
+            };
 	    };
 	 } // namespace os
    } // namespace core
 } // namespace xpu
-
-   #include <xpu/core/os/mutex.cc>
-
 
 #endif // __XPU_MUTEX_79424B4E0A_H__
 

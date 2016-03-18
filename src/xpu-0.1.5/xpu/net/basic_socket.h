@@ -6,10 +6,13 @@
 #include <cstdlib>           // for atoi
 #include <exception>         // for exception class
 
-#ifdef WIN32
+
+
+#ifdef _MSC_VER
   #include <winsock.h>         // for socket(), connect(), send(), and recv()
   typedef int socklen_t;
   typedef char raw_type;       // Type used for raw data on this platform
+#pragma warning( disable : 4290 )
 #else
   #include <sys/types.h>       // for data types
   #include <sys/socket.h>      // for socket(), connect(), send(), and recv()
@@ -27,9 +30,6 @@ static bool initialized = false;
 
 
 #include "socket_exception.h"
-
-namespace xpu
-{
 
 /**
  *   base class representing basic communication endpoint
@@ -111,9 +111,9 @@ class basic_socket {
 
 }; // class basic_socket
 
+#ifndef _MSC_VER
 #include "basic_socket.cc"
-
-} // namespace xpu
+#endif // !_MSC_VER
 
 #endif // __BASIC_SOCKET_H__
 

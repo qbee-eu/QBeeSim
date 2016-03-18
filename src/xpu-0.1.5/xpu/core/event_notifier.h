@@ -37,6 +37,11 @@
 
 #include <xpu/core/generic_worker.h>
 
+#ifdef _MSC_VER
+#include <xpu.h>
+#endif // _MSC_VER
+
+
 
 
 namespace xpu

@@ -25,7 +25,9 @@
  * GNU General Public License for more details.
  *
  */
-
+#ifdef _MSC_VER
+#include <xpu/core/os/spinlock.h>
+#endif
 
 xpu::core::os::spinlock::spinlock(void)
 {  

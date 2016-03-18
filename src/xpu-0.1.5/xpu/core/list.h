@@ -32,6 +32,11 @@
 #include <xpu/stdout.h>
 #include <xpu/exception.h>
 
+#ifdef _MSC_VER
+#pragma warning( disable : 4290 )
+#endif // _MSC_VER
+
+
 namespace xpu
 {
    namespace core

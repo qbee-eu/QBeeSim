@@ -1,14 +1,20 @@
 
+#ifdef _MSC_VER
+#include <xpu/net/basic_socket.h>
+#pragma warning( disable : 4290 )
+#endif // _MSC_VER
+
+
 // function to fill in address structure given an address and port
 
-inline static void fill_addr(const std::string &address, unsigned short port, 
+inline static void fill_addr(const std::string &address, unsigned short port,
                              sockaddr_in &addr) {
   memset(&addr, 0, sizeof(addr));  // zero out address structure
   addr.sin_family = AF_INET;       // internet address
 
   hostent *host;  // Resolve name
   if ((host = gethostbyname(address.c_str())) == NULL) {
-    // strerror() will not work for gethostbyname() and hstrerror() 
+    // strerror() will not work for gethostbyname() and hstrerror()
     // is supposedly obsolete
     throw socket_exception("failed to resolve name (gethostbyname())");
   }
@@ -19,10 +25,10 @@ inline static void fill_addr(const std::string &address, unsigned short port,
 
 // socket code
 
-basic_socket::basic_socket(int type, 
-                           int protocol) throw(socket_exception) 
+basic_socket::basic_socket(int type,
+                           int protocol) throw(socket_exception)
 {
-  #ifdef WIN32
+  #ifdef _MSC_VER
     if (!initialized) {
       WORD wVersionRequested;
       WSADATA wsaData;
@@ -42,15 +48,15 @@ basic_socket::basic_socket(int type,
 }
 
 
-basic_socket::basic_socket(int sock_desc) 
+basic_socket::basic_socket(int sock_desc)
 {
   this->sock_desc = sock_desc;
 }
 
 
-basic_socket::~basic_socket() 
+basic_socket::~basic_socket()
 {
-  #ifdef WIN32
+  #ifdef _MSC_VER
     ::closesocket(sock_desc);
   #else
     ::close(sock_desc);
@@ -60,7 +66,7 @@ basic_socket::~basic_socket()
 
 
 
-std::string basic_socket::get_local_address() throw (socket_exception) 
+std::string basic_socket::get_local_address() throw (socket_exception)
 {
   sockaddr_in addr;
   unsigned int addr_len = sizeof(addr);
@@ -73,19 +79,19 @@ std::string basic_socket::get_local_address() throw (socket_exception)
 
 
 
-unsigned short basic_socket::get_local_port() throw(socket_exception) 
+unsigned short basic_socket::get_local_port() throw(socket_exception)
 {
   sockaddr_in addr;
   unsigned int addr_len = sizeof(addr);
 
-  if (getsockname(sock_desc, (sockaddr *) &addr, (socklen_t *) &addr_len) < 0) 
+  if (getsockname(sock_desc, (sockaddr *) &addr, (socklen_t *) &addr_len) < 0)
   {
     throw socket_exception("fetch of local port failed (getsockname())", true);
   }
   return ntohs(addr.sin_port);
 }
 
-void basic_socket::set_local_port(unsigned short local_port) throw(socket_exception) 
+void basic_socket::set_local_port(unsigned short local_port) throw(socket_exception)
 {
   // bind the socket to its port
   sockaddr_in local_addr;
@@ -100,7 +106,7 @@ void basic_socket::set_local_port(unsigned short local_port) throw(socket_except
 }
 
 void basic_socket::set_local_address_and_port(const std::string &local_address,
-                                              unsigned short local_port) throw(socket_exception) 
+                                              unsigned short local_port) throw(socket_exception)
 {
   // Get the address of the requested host
   sockaddr_in local_addr;
@@ -111,9 +117,9 @@ void basic_socket::set_local_address_and_port(const std::string &local_address,
   }
 }
 
-void basic_socket::cleanup() throw(socket_exception) 
+void basic_socket::cleanup() throw(socket_exception)
 {
-  #ifdef WIN32
+  #ifdef _MSC_VER
     if (WSACleanup() != 0) {
       throw socket_exception("WSACleanup() failed");
     }
@@ -121,14 +127,12 @@ void basic_socket::cleanup() throw(socket_exception)
 }
 
 unsigned short basic_socket::resolve_service(const std::string &service,
-                                             const std::string &protocol) 
+                                             const std::string &protocol)
 {
   struct servent *serv;        /* structure containing service information */
 
   if ((serv = getservbyname(service.c_str(), protocol.c_str())) == NULL)
     return atoi(service.c_str());  /* service is port number */
-  else 
+  else
     return ntohs(serv->s_port);    /* found port (network byte order) by name */
 }
-
-

@@ -26,6 +26,9 @@
  *
  */
 
+#ifdef _MSC_VER
+#include <xpu/core/os/barrier.h>
+#endif
 
 
 /**

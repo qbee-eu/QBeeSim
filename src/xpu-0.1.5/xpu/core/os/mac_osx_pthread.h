@@ -1,7 +1,12 @@
 #ifndef PTHREAD_BARRIER_H
 #define PTHREAD_BARRIER_H
 
+#ifdef _MSC_VER
+#include <pthread/include/pthread.h>
+#else
 #include <pthread.h>
+#include "mac_osx_pthread.h"
+#endif
 #include <errno.h>
 
 #ifdef __APPLE__

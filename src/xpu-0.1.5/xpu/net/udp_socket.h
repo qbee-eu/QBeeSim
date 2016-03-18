@@ -1,9 +1,10 @@
 #ifndef __UDP_SOCKET_H__
 #define __UDP_SOCKET_H__
 
+#ifdef _MSC_VER
+#include <xpu/net/active_socket.h>
+#endif // _MSC_VER
 
-namespace xpu
-{
 
 /**
   *   udp socket class
@@ -14,7 +15,8 @@ public:
    *   Construct a UDP socket
    *   @exception socket_exception thrown if unable to create UDP socket
    */
-  udp_socket() throw (socket_exception);
+    udp_socket() throw (socket_exception);
+
 
   /**
    *   Construct a UDP socket with the given local port
@@ -89,9 +91,8 @@ private:
   void set_broadcast();
 };
 
-
+#ifndef _MSC_VER
 #include "udp_socket.cc"
-
-}
+#endif // !_MSC_VER
 
 #endif // __UDP_SOCKET_H__

@@ -85,6 +85,11 @@ namespace xpu
 	{ 
 	}
 	
+#ifdef _MSC_VER
+    pointers get_out_data();
+    pointers get_in_data();
+    void set_shared(pointer p, lockable * l);
+#else
      pointers get_out_data()
 	{
 	   pointers ptrs;
@@ -110,8 +115,11 @@ namespace xpu
 	   for (unsigned int i=0; i<m_stages.size(); i++)
 		 m_stages[i].get_task()->set_shared(p,l);
 	}
-   
+#endif // _MSC_VER
    };
+
+#ifndef _MSC_VER
+
 
    /**
     * xpu::pipeline::pipeline implementation
@@ -394,6 +402,7 @@ namespace xpu
 	    delete m_events[i];
 	 }
    }
+#endif // !_MSC_VER
 
 
 } // xpu

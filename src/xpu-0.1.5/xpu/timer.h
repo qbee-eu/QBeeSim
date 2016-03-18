@@ -28,12 +28,17 @@
 #ifndef __XPU_TIMER_H__
 #define __XPU_TIMER_H__
 
-#include <time.h>
 
-#ifdef __MACH__
+
+#ifdef __MACH__     // Mac OS X
 #include <mach/clock.h>
 #include <mach/mach.h>
+#elif _MSC_VER      // Windows
+#include <xpu/win_time.h>
+#else               // Linux
+#include <time.h>
 #endif
+
 
 /**
 #ifdef __MACH__
@@ -75,6 +80,8 @@ namespace xpu
 	  mach_port_deallocate(mach_task_self(), cclock);
 	  __start_t.tv_sec  = mts.tv_sec;
 	  __start_t.tv_nsec = mts.tv_nsec;
+#elif _MSC_VER
+      clock_get_time(&__start_t);
 #else
 	  clock_gettime(CLOCK_REALTIME, &__start_t);
 #endif
@@ -90,6 +97,8 @@ namespace xpu
 	  mach_port_deallocate(mach_task_self(), cclock);
 	  __end_t.tv_sec  = mts.tv_sec;
 	  __end_t.tv_nsec = mts.tv_nsec;
+#elif _MSC_VER
+         clock_get_time(&__start_t);
 #else
 	  clock_gettime(CLOCK_REALTIME, &__end_t);
 #endif
@@ -112,6 +121,8 @@ namespace xpu
 	  mach_port_deallocate(mach_task_self(), cclock);
 	  t.tv_sec  = mts.tv_sec;
 	  t.tv_nsec = mts.tv_nsec;
+#elif _MSC_VER
+        clock_get_time(&t);
 #else
 	    clock_gettime(CLOCK_REALTIME, &t);
 #endif

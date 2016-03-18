@@ -5,6 +5,10 @@
  * @brief		
  */
 
+#ifdef _MSC_VER
+#include <core/gaussian.h>
+#endif // _MSC_VER
+
 /**
  * random
  */

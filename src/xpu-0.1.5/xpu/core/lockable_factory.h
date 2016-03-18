@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2014 Nader Khammassi, All Rights Reserved.
  *
- * This file is part of XPU and has been downloaded from 
+ * This file is part of XPU and has been downloaded from
  * http://www.xpu-project.net/.
  *
  * XPU is free software: you can redistribute it and/or modify
@@ -28,52 +28,48 @@
 #define __XPU_LOCKABLE_FACTORY_H__
 
 #include <map>
-
 #include <xpu/lockable.h>
 #ifdef __XPU_USE_SPINLOCK__
- #include <xpu/core/os/spinlock.h>
+#include <xpu/core/os/spinlock.h>
 #else
- #include <xpu/core/os/mutex.h>
+#include <xpu/core/os/mutex.h>
 #endif
 
 using namespace xpu::core::os;
 
 /**
- * @class lockable_factory 
+ * @class lockable_factory
  * @brief
- *   lockable_factory must be used as the unique (spin or mutex) factory, 
- *  it's implemented as a singleton to ensure unique association of a lock 
- *  to each given pointer. this factory is designed to avoid instanciation 
+ *   lockable_factory must be used as the unique (spin or mutex) factory,
+ *  it's implemented as a singleton to ensure unique association of a lock
+ *  to each given pointer. this factory is designed to avoid instanciation
  *  of multiples mutexes for a same resource to ensure data protection efficency.
  */
 namespace xpu
 {
-   namespace core
-   {
-   class lockable_factory
-   {
-    typedef void *  pointer;
+    namespace core
+    {
+        class lockable_factory
+        {
+            typedef void *  pointer;
 
-    private:
+        private:
 
-	 static lockable_factory *     m_instance;
-	 std::map<pointer, lockable*>  m_shared;
+            static lockable_factory *     m_instance;
+            std::map<pointer, lockable*>  m_shared;
 
-	 lockable_factory() { }
+            lockable_factory() { }
 
-    public:
-	 static lockable_factory * instance();
-	
-	 ~lockable_factory();
+        public:
+            static lockable_factory * instance();
 
-	 // get unique mutex for pointer if exists else create new one 
-	 lockable * getlockable(pointer p);   
+            ~lockable_factory();
 
-   };
+            // get unique mutex for pointer if exists else create new one 
+            lockable * getlockable(pointer p);
 
- #include <xpu/core/lockable_factory.cc>
-
-   } // core
+        };
+    } // core
 } // namespace xpu
 
 #endif // __XPU_LOCKABLE_FACTORY_H__

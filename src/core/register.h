@@ -30,9 +30,9 @@ using namespace qx::linalg;
 #define __cpl_format(x) __flt_format(x.real()) << ", " << __flt_format(x.imag()) 
 #define __format_bin(x) (x == __state_0__ ? '0' : (x == __state_1__ ? '1' : 'X')) 
 
-char bin_state_lt [] = { '0', '1', 'X' };
-
-
+#ifndef _MSC_VER
+char bin_state_lt[] = { '0', '1', 'X' };
+#endif // !_MSC_VER
 
 
 namespace qx
@@ -177,8 +177,10 @@ namespace qx
     */
    double fidelity(qu_register& s1, qu_register& s2);
 
+#ifndef _MSC_VER
+    #include "register.cc"
+#endif // _MSC_VER
 
-   #include "register.cc"
 
 }
 

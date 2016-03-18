@@ -6,10 +6,6 @@
 #include <exception>         // for exception 
 #include <cerrno>            // for errno
 
-
-namespace xpu
-{
-
 class socket_exception : public std::exception 
 {
 
@@ -39,9 +35,9 @@ class socket_exception : public std::exception
 
 }; // class socket_exception
 
+#ifndef _MSC_VER
 #include "socket_exception.cc"
-
-} // xpu
+#endif // _MSC_VER
 
 #endif // __SOCKET_EXCEPTION_H__
 

@@ -2,8 +2,9 @@
 #include <vector>
 #include <complex>
 #include <cstring>
+#include <cstdlib>
 
-#include <kronecker.h>
+#include <core/kronecker.h>
 
 #define println(x) std::cout << x << std::endl
 #define print(x) std::cout << x 
@@ -47,6 +48,8 @@ int main(int argc, char **argv)
 
    printv(v);
    printv(r);
+
+   system("pause");
 
    return 0;
 }

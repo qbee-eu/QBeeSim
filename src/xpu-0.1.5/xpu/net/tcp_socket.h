@@ -3,9 +3,10 @@
 
 #include "active_socket.h"
 
+#ifdef _MSC_VER
+#include <xpu/net/socket_exception.h>
+#endif // _MSC_VER
 
-namespace xpu
-{
 
 class tcp_socket : public active_socket
 {
@@ -35,9 +36,9 @@ private:
 
 }; // class tcp_socket
 
+#ifndef _MSC_VER
 #include "tcp_socket.cc"
-
-}
+#endif // !_MSC_VER
 
 #endif // __TCP_SOCKET_H__
 

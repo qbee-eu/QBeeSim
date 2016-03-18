@@ -27,8 +27,11 @@
 #ifndef __XPU_TASK__
 #define __XPU_TASK__
 
+//#pragma message (__FILE__ ": include xpu/task_group.h")
 #include <xpu/task_group.h>
+//#pragma message (__FILE__ ": include xpu/static_callback.h")
 #include <xpu/static_callback.h>
+//#pragma message (__FILE__ ": include xpu/dynamic_callback.h")
 #include <xpu/dynamic_callback.h>
 
 

@@ -1,15 +1,20 @@
+#ifdef _MSC_VER
+#include <core/register.h>
+#include <core/srand48.h>
+#endif // _MSC_VER
+
 /**
  * collapse state
  */
 uint32_t qx::qu_register::collapse(uint32_t entry)
 {
-   for (uint32_t i=0; i<data.size(); ++i)
-   {
-      data[i] = 0;
-   }
-   data[entry] = 1;
-   set_binary(entry,n_qubits);
-   return entry;
+    for (uint32_t i = 0; i < data.size(); ++i)
+    {
+        data[i] = 0;
+    }
+    data[entry] = 1;
+    set_binary(entry, n_qubits);
+    return entry;
 }
 
 
@@ -18,9 +23,9 @@ uint32_t qx::qu_register::collapse(uint32_t entry)
  */
 void qx::qu_register::to_binary(uint32_t state, uint32_t nq)
 {
-   uint32_t k=0;
-   while (nq--)
-      std::cout << (((state >> nq) & 1) ? "1" : "0");
+    uint32_t k = 0;
+    while (nq--)
+        std::cout << (((state >> nq) & 1) ? "1" : "0");
 }
 
 
@@ -29,13 +34,13 @@ void qx::qu_register::to_binary(uint32_t state, uint32_t nq)
  */
 void qx::qu_register::set_binary(uint32_t state, uint32_t nq)
 {
-   //uint32_t k=0;
-   uint32_t k=nq-1;
-   while (nq--)
-   {
-      binary[k--] = (((state >> nq) & 1) ? __state_1__ : __state_0__);
-      //binary[k++] = (((state >> nq) & 1) ? __state_1__ : __state_0__);
-   }
+    //uint32_t k=0;
+    uint32_t k = nq - 1;
+    while (nq--)
+    {
+        binary[k--] = (((state >> nq) & 1) ? __state_1__ : __state_0__);
+        //binary[k++] = (((state >> nq) & 1) ? __state_1__ : __state_0__);
+    }
 }
 
 
@@ -44,11 +49,11 @@ void qx::qu_register::set_binary(uint32_t state, uint32_t nq)
  */
 qx::qu_register::qu_register(uint32_t n_qubits) : data(1 << n_qubits), binary(n_qubits), n_qubits(n_qubits)
 {
-   data[0] = complex_t(1,0);
-   for (uint32_t i=1; i<(1 << n_qubits); ++i)
-      data[i] = 0;
-   for (uint32_t i=0; i<n_qubits; i++)
-      binary[i] = __state_0__;
+    data[0] = complex_t(1, 0);
+    for (uint32_t i = 1; i < static_cast<uint32_t>(1 << n_qubits); ++i)
+        data[i] = 0;
+    for (uint32_t i = 0; i < n_qubits; i++)
+        binary[i] = __state_0__;
 }
 
 
@@ -57,11 +62,11 @@ qx::qu_register::qu_register(uint32_t n_qubits) : data(1 << n_qubits), binary(n_
  */
 void qx::qu_register::reset()
 {
-   data[0] = complex_t(1,0);
-   for (uint32_t i=1; i<(1 << n_qubits); ++i)
-      data[i] = 0;
-   for (uint32_t i=0; i<n_qubits; i++)
-      binary[i] = __state_0__;
+    data[0] = complex_t(1, 0);
+    for (uint32_t i = 1; i < static_cast<uint32_t>(1 << n_qubits); ++i)
+        data[i] = 0;
+    for (uint32_t i = 0; i < n_qubits; i++)
+        binary[i] = __state_0__;
 }
 
 
@@ -70,7 +75,7 @@ void qx::qu_register::reset()
  */
 cvector_t& qx::qu_register::get_data()
 {
-   return data;
+    return data;
 }
 
 
@@ -79,7 +84,7 @@ cvector_t& qx::qu_register::get_data()
  */
 void qx::qu_register::set_data(cvector_t d)
 {
-   data = d;
+    data = d;
 }
 
 
@@ -88,7 +93,7 @@ void qx::qu_register::set_data(cvector_t d)
  */
 uint32_t qx::qu_register::size()
 {
-   return n_qubits;
+    return n_qubits;
 }
 
 
@@ -97,21 +102,21 @@ uint32_t qx::qu_register::size()
  */
 uint32_t qx::qu_register::states()
 {
-   return (1 << n_qubits);
+    return (1 << n_qubits);
 }
 
 
 /**
  * \brief assign operator
  */
-cvector_t & qx::qu_register::operator=(cvector_t d) 
-{ 
-   assert(d.size() == data.size());
-   data.resize(d.size());
-   data = d;
-   // data.resize(d.size());
-   return data;
-} 
+cvector_t & qx::qu_register::operator=(cvector_t d)
+{
+    assert(d.size() == data.size());
+    data.resize(d.size());
+    data = d;
+    // data.resize(d.size());
+    return data;
+}
 
 
 /**
@@ -119,7 +124,7 @@ cvector_t & qx::qu_register::operator=(cvector_t d)
  */
 complex_t& qx::qu_register::operator[](uint32_t i)
 {
-   return data[i];
+    return data[i];
 }
 
 
@@ -130,11 +135,11 @@ complex_t& qx::qu_register::operator[](uint32_t i)
  */
 bool qx::qu_register::check()
 {
-   double sum=0;
-   for (int i=0; i<data.size(); ++i)
-      sum += std::norm(data[i]);
-   println("[+] register validity check : " << sum) ;
-   return (std::fabs(sum-1) < QUBIT_ERROR_THRESHOLD);
+    double sum = 0;
+    for (size_t i = 0; i < data.size(); ++i)
+        sum += std::norm(data[i]);
+    println("[+] register validity check : " << sum);
+    return (std::fabs(sum - 1) < QUBIT_ERROR_THRESHOLD);
 }
 
 
@@ -144,49 +149,49 @@ bool qx::qu_register::check()
 int32_t qx::qu_register::measure()
 {
 #ifdef SAFE_MODE
-   if (!check())
-      return -1;
+    if (!check())
+        return -1;
 #endif // SAFE_MODE
-   
-   srand48(xpu::timer().current());
-   double r = drand48();
-   
-   for (int i=0; i<data.size(); ++i)
-   {
-      r -= std::norm(data[i]);
-      if (r <= 0)
-      {
-	 collapse(i);
-	 return 1; 
-      }
-   }
-   return -1;
+
+    srand48(static_cast<long>(xpu::timer().current()));
+    double r = drand48();
+
+    for (size_t i = 0; i < data.size(); ++i)
+    {
+        r -= std::norm(data[i]);
+        if (r <= 0)
+        {
+            collapse(static_cast<uint32_t>(i));
+            return 1;
+        }
+    }
+    return -1;
 }
 
 
 /**
  * \brief dump
  */
-void qx::qu_register::dump(bool only_binary=false)
+void qx::qu_register::dump(bool only_binary = false)
 {
-   if (!only_binary)
-   {
-      println("--------------[quantum state]-------------- ");
-      std::cout << std::fixed;
-      for (int i=0; i<data.size(); ++i)
-      {
-	 if (data[i] != complex_t(0,0)) 
-	 {
-	    print("   " << std::fixed << data[i] << " |"); to_binary(i,n_qubits); println("> +");
-	 }
-      }
-   }
-   print("[>>] binary register:");
-   print(" ");
-   for (int i=binary.size()-1; i>=0; --i)
-      print(" | " << __format_bin(binary[i]));  
-   println(" |");
-   println("------------------------------------------- ");
+    if (!only_binary)
+    {
+        println("--------------[quantum state]-------------- ");
+        std::cout << std::fixed;
+        for (size_t i = 0; i < data.size(); ++i)
+        {
+            if (data[i] != complex_t(0, 0))
+            {
+                print("   " << std::fixed << data[i] << " |"); to_binary(i, n_qubits); println("> +");
+            }
+        }
+    }
+    print("[>>] binary register:");
+    print(" ");
+    for (int i = binary.size() - 1; i >= 0; --i)
+        print(" | " << __format_bin(binary[i]));
+    println(" |");
+    println("------------------------------------------- ");
 }
 
 
@@ -195,14 +200,14 @@ void qx::qu_register::dump(bool only_binary=false)
  */
 void qx::qu_register::set_binary(uint32_t state)
 {
-   // print("  [-] set binary register to state : ");
-   to_binary(state,n_qubits);
-   uint32_t k=0;
-   uint32_t nq = n_qubits;
-   while (nq--)
-   {
-      binary[k++] = (((state >> nq) & 1) ? __state_1__ : __state_0__);
-   }
+    // print("  [-] set binary register to state : ");
+    to_binary(state, n_qubits);
+    uint32_t k = 0;
+    uint32_t nq = n_qubits;
+    while (nq--)
+    {
+        binary[k++] = (((state >> nq) & 1) ? __state_1__ : __state_0__);
+    }
 }
 
 
@@ -212,19 +217,19 @@ void qx::qu_register::set_binary(uint32_t state)
  */
 void qx::qu_register::set_binary(uint32_t q, state_t s)
 {
-   assert(q<n_qubits);
-   binary[q] = s;
+    assert(q < n_qubits);
+    binary[q] = s;
 }
 
 
 /**
  * \brief getter
- * \return the state of bit <q> 
+ * \return the state of bit <q>
  */
-state_t qx::qu_register::get_binary(uint32_t q)
+qx::state_t qx::qu_register::get_binary(uint32_t q)
 {
-   assert(q<n_qubits);
-   return binary[q];
+    assert(q < n_qubits);
+    return binary[q];
 }
 
 
@@ -234,8 +239,8 @@ state_t qx::qu_register::get_binary(uint32_t q)
  */
 bool qx::qu_register::test(uint32_t q) // throw (qubit_not_measured_exception)  // trow exception if qubit value is unknown (never measured) !!!!
 {
-   assert(q<n_qubits);
-   return (binary[q] == __state_1__);
+    assert(q < n_qubits);
+    return (binary[q] == __state_1__);
 }
 
 
@@ -244,27 +249,27 @@ bool qx::qu_register::test(uint32_t q) // throw (qubit_not_measured_exception)  
  */
 void qx::qu_register::flip_binary(uint32_t q)
 {
-   assert(q<n_qubits);
-   state_t s = binary[q];
-   binary[q] = (s != __state_unknown__ ? (s == __state_1__ ? __state_0__ : __state_1__) : s);  
+    assert(q < n_qubits);
+    state_t s = binary[q];
+    binary[q] = (s != __state_unknown__ ? (s == __state_1__ ? __state_0__ : __state_1__) : s);
 }
 
 
 /**
  * fidelity
  */
-double fidelity(qu_register& s1, qu_register& s2)
+double fidelity(qx::qu_register& s1, qx::qu_register& s2)
 {
-   if (s1.size() != s2.size())
-   {
-      println("[x] error : the specified registers have different sizes !");
-      return -1;
-   }
+    if (s1.size() != s2.size())
+    {
+        println("[x] error : the specified registers have different sizes !");
+        return -1;
+    }
 
-   double f = 0;  
-   for (int i=0; i<s1.states(); ++i)
-      f += sqrt(std::norm(s1[i])*std::norm(s2[i]));
-   
-   return f;
+    double f = 0;
+    for (size_t i = 0; i < s1.states(); ++i)
+        f += sqrt(std::norm(s1[i])*std::norm(s2[i]));
+
+    return f;
 }
 

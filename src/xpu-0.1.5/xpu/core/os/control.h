@@ -29,7 +29,11 @@
 #ifndef __XPU_DATA_CONTROL_H__
 #define __XPU_DATA_CONTROL_H__
 
+#ifdef _MSC_VER
+#include <pthread/include/pthread.h>
+#else
 #include <pthread.h>
+#endif
 
 namespace xpu
 {

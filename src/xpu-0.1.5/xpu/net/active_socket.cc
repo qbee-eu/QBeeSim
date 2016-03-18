@@ -1,3 +1,7 @@
+#ifdef _MSC_VER
+#include <xpu/net/active_socket.h>
+#pragma warning( disable : 4290 )
+#endif // _MSC_VER
 
 active_socket::active_socket(int type, int protocol)  
                              throw (socket_exception) : basic_socket(type, protocol) 

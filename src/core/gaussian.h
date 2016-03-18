@@ -59,8 +59,9 @@ namespace qx
 		  std::default_random_engine generator;
 		  std::normal_distribution<double> distribution;
 	 };
-
-	 #include "gaussian.cc"
+#ifndef _MSC_VER
+#include "gaussian.cc"
+#endif // !_MSC_VER
 
    } // gaussian 
 } // math

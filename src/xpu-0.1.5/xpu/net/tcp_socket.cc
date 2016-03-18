@@ -1,4 +1,8 @@
 
+#ifdef _MSC_VER
+#include <xpu/net/tcp_socket.h>
+#endif // _MSC_VER
+
 
 tcp_socket::tcp_socket() throw(socket_exception) : active_socket(SOCK_STREAM, IPPROTO_TCP) 
 {

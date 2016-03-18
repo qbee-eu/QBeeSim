@@ -8,7 +8,9 @@
 
 // normal_distribution
 #include <iostream>
+#include <string>
 #include <random>
+#include <cstdlib>
 
 int main()
 {
@@ -32,5 +34,6 @@ int main()
 	 std::cout << std::string(p[i]*nstars/nrolls,'*') << std::endl;
    }
 
+   system("pause");
    return 0;
 }

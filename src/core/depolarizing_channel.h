@@ -2,6 +2,9 @@
 #define QX_DEPOLARIZING_CHANNEL_H
 
 #include <core/error_injector.h>
+#ifdef _MSC_VER
+#include <core/srand48.h>
+#endif // _MSC_VER
 
 namespace qx
 {

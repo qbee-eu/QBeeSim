@@ -32,8 +32,17 @@
 #include <iostream>
 #include <cerrno>
 
+#ifdef _MSC_VER
+#include <pthread/include/pthread.h>
+#elif
 #include <xpu/core/os/spinlock.h>
 #include <xpu/core/os/mutex.h>
+#endif // _MSC_VER
+
+#ifdef _MSC_VER
+std::ostream& operator<<(std::ostream& os, pthread_t pt); // This function is to enable printing pthread_t in MSVC.
+#endif // _MSC_VER
+
 
 namespace xpu 
 {
@@ -49,7 +58,7 @@ namespace xpu
 
   #define __debug(x) std::cout << "debug : [thread " << pthread_self() << "] " << __FILE__ << " : " << __LINE__ << " : " << __func__ << "() : " << x << std::endl;
   #define __trace(x) std::cout << "trace : [thread " << pthread_self() << "] " << __FILE__ << " : " << __LINE__ << " : " << __func__ << "() : " << x << std::endl;
-  //#define __error(x) std::cerr << "error : [thread " << pthread_self() << "] " << __FILE__ << " : " << __LINE__ << " : " << __func__ << "() : " << x << std::endl;
+  #define __error(x) std::cerr << "error : [thread " << pthread_self() << "] " << __FILE__ << " : " << __LINE__ << " : " << __func__ << "() : " << x << std::endl;
   #define __errno(x) std::cerr << "error : [thread " << pthread_self() << "] " << __FILE__ << " : " << __LINE__ << " : " << __func__ << "() : " << x << ":" << strerror(errno) << std::endl;  
   #ifdef __xpu_debug__
     #define __xpu_trace__(x) __trace(x)

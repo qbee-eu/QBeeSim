@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\core\binary_counter.h" />
+    <ClInclude Include="..\..\src\core\circuit.h" />
+    <ClInclude Include="..\..\src\core\circuit_loader.h" />
+    <ClInclude Include="..\..\src\core\depolarizing_channel.h" />
+    <ClInclude Include="..\..\src\core\error_injector.h" />
+    <ClInclude Include="..\..\src\core\error_model.h" />
+    <ClInclude Include="..\..\src\core\gate.h" />
+    <ClInclude Include="..\..\src\core\gaussian.h" />
+    <ClInclude Include="..\..\src\core\hash_set.h" />
+    <ClInclude Include="..\..\src\core\hash_table.h" />
+    <ClInclude Include="..\..\src\core\kronecker.h" />
+    <ClInclude Include="..\..\src\core\linalg.h" />
+    <ClInclude Include="..\..\src\core\matrix.h" />
+    <ClInclude Include="..\..\src\core\memory_monitor.h" />
+    <ClInclude Include="..\..\src\core\qasm.h" />
+    <ClInclude Include="..\..\src\core\register.h" />
+    <ClInclude Include="..\..\src\core\srand48.h" />
+    <ClInclude Include="..\..\src\qcode\quantum_code_loader.h" />
+    <ClInclude Include="..\..\src\qcode\strings.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\pthread\include\pthread.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\pthread\include\sched.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\pthread\include\semaphore.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\event_listener.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\event_notifier.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\event_relay.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\generic_worker.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\list.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\lockable_factory.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\object_pool.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\os\barrier.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\os\control.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\os\cpuset.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\os\event.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\os\mac_osx_pthread.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\os\mutex.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\os\spinlock.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\os\thread.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\queue.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\core\work.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\dynamic_callback.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\exception.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\lockable.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\parallel_for.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\parallel_tasks.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\pipeline.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\pointers.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\processor.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\range.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\sequential_tasks.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\static_callback.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\stdout.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\task.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\task_group.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\timer.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\types.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\utils.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\vec3f.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\vec4f.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\vec8s.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\vectorize.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\win_system_info.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\win_time.h" />
+    <ClInclude Include="..\..\src\xpu-0.1.5\xpu\xxmmintrin.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\core\gaussian.cc" />
+    <ClCompile Include="..\..\src\core\linalg.cc" />
+    <ClCompile Include="..\..\src\core\register.cc" />
+    <ClCompile Include="..\..\src\core\srand48.cc" />
+    <ClCompile Include="..\..\src\tools\simulator.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\core\lockable_factory.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\core\os\barrier.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\core\os\spinlock.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\exception.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\parallel_tasks.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\pipeline.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\pointers.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\sequential_tasks.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\stdout.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\win_system_info.cc" />
+    <ClCompile Include="..\..\src\xpu-0.1.5\xpu\win_time.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\xpu-0.1.5\xpu\runtime" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{960F8AE4-3719-44C3-872B-7CAC9B5DDA6A}</ProjectGuid>
+    <RootNamespace>qx_simulator</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\..\bin\Windows\$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_60_0;D:\Projects\qx-simulator\src;D:\Projects\qx-simulator\src\xpu-0.1.5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

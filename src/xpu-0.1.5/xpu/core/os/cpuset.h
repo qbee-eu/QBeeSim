@@ -35,8 +35,12 @@
 
 
 //#include <xpu.h>
+//#pragma message (__FILE__ ": include xpu/types.h")
 #include <xpu/types.h>
+#ifndef _MSC_VER
+//#pragma message (__FILE__ ": include xpu/core/generic_worker.h")
 #include <xpu/core/generic_worker.h>
+#endif // !_MSC_VER
 
 //#ifdef __unix__
 #if defined(__linux) || defined(__osf__) || defined(__sun) 

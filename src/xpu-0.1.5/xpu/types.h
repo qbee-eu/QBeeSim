@@ -28,7 +28,7 @@
 #ifndef __XPU_TYPES__
 #define __XPU_TYPES__
 
-#if defined(__sun) || defined(__linux) || defined(__osf__) || defined(_AIX) || defined(__MACH__) // this must be verified
+#if defined(__sun) || defined(__linux) || defined(__osf__) || defined(_AIX) // this must be verified
 #include <sys/types.h>
 #else
 
@@ -37,6 +37,14 @@ typedef unsigned char u_char;
 typedef unsigned short int u_short;
 typedef unsigned int u_int;
 typedef unsigned long int u_long;
+
+#ifdef _MSC_VER
+#include <stdint.h>
+typedef uint8_t u_int8_t;
+typedef uint16_t u_int16_t;
+typedef uint32_t u_int32_t;
+typedef uint64_t u_int64_t;
+#else
 
 // ---- fixed-size types, underlying types : ---- //
 // ---- depend on word size and compiler     ---- //
@@ -56,6 +64,9 @@ __extension__ typedef unsigned long long int u_int64_t;
 typedef signed long int int64_t;
 typedef unsigned long int u_int64_t;
 #endif // __GLIBC_HAVE_LONG_LONG
+
+#endif // _MSC_VER
+
 #endif // __unix__
 
 

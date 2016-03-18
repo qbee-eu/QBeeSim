@@ -1,14 +1,14 @@
 /**
  * @file		utils.h
- * @author	Nader KHAMMASSI - nader.khammassi@gmail.com 
+ * @author	Nader KHAMMASSI - nader.khammassi@gmail.com
  * @date		29-10-11
- * @brief	     utils 
+ * @brief	     utils
  *
  * @copyright
  *
  * Copyright (C) 2014 Nader Khammassi, All Rights Reserved.
  *
- * This file is part of XPU and has been downloaded from 
+ * This file is part of XPU and has been downloaded from
  * http://www.xpu-project.net/.
  *
  * XPU is free software: you can redistribute it and/or modify
@@ -21,19 +21,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * @brief 
+ * @brief
  */
 
 #ifndef __XPU_UTILS_79424B4E0A_H__
 #define __XPU_UTILS_79424B4E0A_H__
 
-
+#ifdef _MSC_VER
+#define  __xpu_force_inline__
+#else
 #define __xpu_force_inline__ __attribute__((always_inline))
+#endif
 #define __xpu_disallow_copy_and_assign__(type) \
               type(const type&);             \
 		    void operator=(const type&)
 
 #include <xpu/pointers.h>
+
+#ifdef _MSC_VER
+using namespace xpu;
+#endif // _MSC_VER
 
 namespace xpu
 {
@@ -42,13 +49,13 @@ namespace xpu
     * __read_only
     */
    template<typename __T>
-   static inline const __T * __read_only(__T * d)        __xpu_force_inline__ ; 
+   static inline const __T * __read_only(__T * d)        __xpu_force_inline__ ;
 
    template<typename __T>
    static inline const __T * __read_only(const __T * d)  __xpu_force_inline__ ;
 
    template<typename __T>
-   static inline       __T   __read_only(__T d)          __xpu_force_inline__ ; 
+   static inline       __T   __read_only(__T d)          __xpu_force_inline__ ;
 
 
 
@@ -66,19 +73,19 @@ namespace xpu
    /**
     * __safe_type
     */
-   template<typename __T1> 
+   template<typename __T1>
    static inline __T1 __safe_type(__T1 a, __T1 b)               __xpu_force_inline__ ;
-   
-   template<typename __T1, typename __T2> 
+
+   template<typename __T1, typename __T2>
    static inline __T1 __safe_type(__T1 a, __T2 b)               __xpu_force_inline__ ;
-   
-   template<typename __T1> 
+
+   template<typename __T1>
    static inline __T1 __safe_type(__T1 a, __T1 b)
    {
 	 return b;
    }
 
-   template<typename __T1, typename __T2> 
+   template<typename __T1, typename __T2>
    static inline __T1 __safe_type(__T1 a, __T2 b)
    {
 	 return a;
@@ -97,22 +104,22 @@ namespace xpu
 
 
    template<typename T>
-	 void add_ptr(pointers& in_ptrs, pointers& out_ptrs, T * p)
+	 void add_ptr(xpu::pointers& in_ptrs, xpu::pointers& out_ptrs, T * p)
 	 {
 	    out_ptrs.insert((pointer)p);
 	 }
 
    template<typename T>
-	 void add_ptr(pointers& in_ptrs, pointers& out_ptrs, const T * p)
+	 void add_ptr(xpu::pointers& in_ptrs, xpu::pointers& out_ptrs, const T * p)
 	 {
 	    in_ptrs.insert((pointer)p);
-	 }  
+	 }
 
    template<typename T>
-	 void add_ptr(pointers& in_ptrs, pointers& out_ptrs, T p)
+	 void add_ptr(xpu::pointers& in_ptrs, xpu::pointers& out_ptrs, T p)
 	 {
-	 }  
-   
+	 }
+
    template<typename T>
       T __safe_cast(T x, T y)
 	 {

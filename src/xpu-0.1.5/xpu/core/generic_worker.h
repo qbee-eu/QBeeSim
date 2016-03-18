@@ -30,7 +30,6 @@
 
 #include <xpu/core/os/thread.h>
 #include <xpu/core/os/control.h>
-
 #include <xpu/core/work.h>
 #include <xpu/core/queue.h>
 

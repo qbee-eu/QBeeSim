@@ -8,7 +8,9 @@
 #include <iostream>
 
 #include <xpu.h>
+#ifndef _MSC_VER
 #include <xpu/runtime>
+#endif // !_MSC_VER
 
 #include <core/circuit.h>
 #include <qcode/quantum_code_loader.h>
@@ -44,7 +46,6 @@ int main(int argc, char **argv)
    println("[+] loading circuit from '" << file_name << "' ...");
 
    qcp.parse();
-   //qcp.dump();
 
    xpu::init();
 

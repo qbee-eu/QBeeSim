@@ -3,10 +3,6 @@
 
 #include "tcp_socket.h"
 
-
-namespace xpu
-{
-
 /**
  *   tcp socket class for servers
  */
@@ -47,9 +43,8 @@ private:
   void set_listen(int queue_len) throw (socket_exception);
 };
 
-
+#ifndef _MSC_VER
 #include "tcp_server_socket.cc" 
-
-}
+#endif // !_MSC_VER
 
 #endif // __TCP_SERVER_SOCKET_H__

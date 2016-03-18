@@ -1,4 +1,8 @@
 
+#ifdef _MSC_VER
+#include <xpu/net/udp_socket.h>
+#include <xpu/net/socket_exception.h>
+#endif // _MSC_VER
 
 
 udp_socket::udp_socket() throw (socket_exception) : active_socket(SOCK_DGRAM, IPPROTO_UDP) 
