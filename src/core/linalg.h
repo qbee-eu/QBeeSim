@@ -124,5 +124,10 @@ namespace qx
 }
 
 
+#ifndef _MSC_VER
+#include "linalg.cc"   // ------ !!!!!!!!!!! -----
+#endif
+
+
 #endif // QX_LINALG_H
 

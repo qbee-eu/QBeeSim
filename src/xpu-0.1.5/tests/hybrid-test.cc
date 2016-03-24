@@ -6,7 +6,7 @@
  */
 
 #include <xpu.h>
-//#include <xpu/runtime>
+#include <xpu/runtime>
 
 #define print(x)   std::cout << x 
 #define println(x) std::cout << x << std::endl

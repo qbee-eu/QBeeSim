@@ -109,4 +109,4 @@ xpu::core::lockable_factory::getlockable(pointer p)
        }
    }
 
-#endif // _MSC_VER
+#endif // _MSC_VER // ----- !!!!!!!!!!!!!! -----

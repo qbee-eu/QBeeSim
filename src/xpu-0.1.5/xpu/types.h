@@ -61,8 +61,8 @@ typedef unsigned int u_int32_t;
 __extension__ typedef signed long long int int64_t;
 __extension__ typedef unsigned long long int u_int64_t;
 #else
-typedef signed long int int64_t;
-typedef unsigned long int u_int64_t;
+//typedef signed long int int64_t;
+//typedef unsigned long int u_int64_t;
 #endif // __GLIBC_HAVE_LONG_LONG
 
 #endif // _MSC_VER

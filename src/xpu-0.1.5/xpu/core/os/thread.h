@@ -167,15 +167,20 @@ namespace xpu
 
 			inline pthread_t  id()
             {
+
                 if (m_running)
                     return pthread_self();
                 else
+#ifdef _MSC_VER   // ---------- !!!!!!!! ---------
                 {
                     pthread_t null_thread;
                     null_thread.p = NULL;
                     null_thread.x = 0;
                     return null_thread;
                 }
+#else
+		return 0;
+#endif
             };
 
 			inline pthread_attr_t get_attributes() { return m_attr; };

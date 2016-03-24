@@ -5,6 +5,7 @@
  */
 
 #include <xpu.h>
+#include <xpu/runtime>
 #include <xpu/task.h>
 
 #define print(x)   std::cout << x 

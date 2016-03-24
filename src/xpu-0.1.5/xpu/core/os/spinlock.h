@@ -43,7 +43,7 @@
 //#include <Winnt.h>
 #include <windows.h>
 #define __sync_bool_compare_and_swap(a, b, c) InterlockedCompareExchange(a, b, c)
-#endif _MSC_VER
+#endif // _MSC_VER
 
 #include <cerrno>
 

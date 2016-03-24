@@ -34,7 +34,7 @@
 
 #ifdef _MSC_VER
 #include <pthread/include/pthread.h>
-#elif
+#else
 #include <xpu/core/os/spinlock.h>
 #include <xpu/core/os/mutex.h>
 #endif // _MSC_VER

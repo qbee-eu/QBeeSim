@@ -69,6 +69,12 @@ namespace xpu
             lockable * getlockable(pointer p);
 
         };
+
+#ifndef _MSC_VER
+    #include "lockable_factory.cc"
+#endif
+
+
     } // core
 } // namespace xpu
 
