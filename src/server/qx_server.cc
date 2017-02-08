@@ -4,8 +4,8 @@
  * @date        25-02-16
  */
 
-#include <xpu.h>
-#include <xpu/runtime>
+// #include <xpu.h>
+// #include <xpu/runtime>
 #include <server/qx_server.h>
 
 
@@ -23,15 +23,19 @@ int main(int argc, char **argv)
    println("  =================================================================================================== ");
    println("");
 
-   xpu::init();
+   // xpu::init();
 
    size_t port = 5555;
 
    if (argc == 2)
       port = atoi(argv[1]);
 
-   qx::qx_server server(port);
-   server.start();
+   while (true)
+   {
+      qx::qx_server server(port);
+      server.start();
+      server.stop();
+   }
 
    return 0;
 }

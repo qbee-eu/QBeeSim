@@ -19,7 +19,7 @@
 
 #include <random>
 
-#include <xpu/timer.h>
+// #include <xpu/timer.h>
 #include <core/linalg.h>
 
 // #define SAFE_MODE 1  // state norm check
@@ -300,7 +300,8 @@ namespace qx
 	 {
 	      double length = 0;
 	      for (size_t k = 0; k < data.size(); k++) 
-		 length += data[k].norm(); // std::norm(data[k]);
+		 length += std::norm(data[k]);
+		 // length += data[k].norm(); // std::norm(data[k]);
 	      length = std::sqrt(length);
 	      for (size_t k = 0; k < data.size(); k++) 
 		 data[k] /= length;

@@ -1,7 +1,7 @@
 #ifndef QX_ERROR_INJECTOR
 #define QX_ERROR_INJECTOR
 
-#include <xpu/timer.h>
+// #include <xpu/timer.h>
 #include <core/circuit.h>
 #include <core/gaussian.h>
 #include <core/random.h>

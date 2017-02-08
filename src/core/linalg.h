@@ -43,8 +43,8 @@ namespace qx
 {
    namespace linalg
    { 
-	 //typedef std::complex<double>      complex_t;
-	 typedef xpu::complex_d complex_t;
+	 typedef std::complex<double>      complex_t;
+	 // typedef xpu::complex_d complex_t;
 // #ifndef __BUILTIN_LINALG__
 // 	 typedef ublas::vector<complex_t>  cvector_t;
 // 	 typedef ublas::matrix<complex_t>  cmatrix_t;
@@ -230,8 +230,8 @@ namespace qx
 	    for (int i=0; i<m1.size1(); ++i)
 		  for (int j=0; j<m1.size2(); ++j) 
 		  {
-			// double d = std::abs(std::norm(m1(i,j))-std::norm(m2(i,j)));
-			double d = m1(i,j).norm()-m2(i,j).norm();
+			double d = std::abs(std::norm(m1(i,j))-std::norm(m2(i,j)));
+			// double d = m1(i,j).norm()-m2(i,j).norm();
 			if (d>epsilon)
 			   return false;
 		  }
@@ -375,8 +375,8 @@ namespace qx
 		  for (uint32_t j=0; j<m.size1(); ++j)
 		  {
 			if (complex_format) print(m(i,j) << "  ");
-			else print(m(i,j).re << "  ");
-			//else print(m(i,j).real() << "  ");
+			// else print(m(i,j).re << "  ");
+			else print(m(i,j).real() << "  ");
 		  }
 	    }
 	    println("");

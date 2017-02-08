@@ -1,6 +1,6 @@
 AC_INIT([qx-simulator],[0.1.3],[nader.khammassi@gmail.com],[qx-simulator])
-AC_PREREQ([2.69])
-AM_INIT_AUTOMAKE([1.10 -Wall no-define])
+# AC_PREREQ([2.69])
+# AM_INIT_AUTOMAKE([1.10 -Wall no-define])
 # author: Nader Khammassi
 # bugreport to : nader.khammassi@gmail.com
 

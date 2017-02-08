@@ -7,7 +7,6 @@
 #ifndef QX_RANDOM_H
 #define QX_RANDOM_H
 
-#include <xpu/timer.h>
 
 #include <random>
 
@@ -26,7 +25,7 @@ namespace qx
 	 /**
 	  * \brief ctor
 	  */
-	 uniform_random_number_generator(double min=0.0f, double max=1.0f) : min(min), max(max), distribution(min,max), generator(xpu::timer().current()*rd())
+	 uniform_random_number_generator(double min=0.0f, double max=1.0f) : min(min), max(max), distribution(min,max), generator(clock()*rd())
 	 {
 	 }
 
@@ -59,7 +58,7 @@ namespace qx
 	 /**
 	  * \brief ctor
 	  */
-	 normal_random_number_generator(double mean=0.0f, double deviation=1.0f) : mean(mean), deviation(deviation), generator(xpu::timer().current()*rd()), distribution(mean,deviation)
+	 normal_random_number_generator(double mean=0.0f, double deviation=1.0f) : mean(mean), deviation(deviation), generator(clock()*rd()), distribution(mean,deviation)
 	 {
 	 }
 

@@ -85,7 +85,17 @@ namespace qx
 	   while (!stop)
 	   {
 	      clear(buf,__buf_size);
-	      size_t bytes = sock->recv(buf, __buf_size); 
+	      size_t bytes;
+	      try
+	      {
+		 bytes = sock->recv(buf, __buf_size); 
+	      } catch (xpu::socket_exception)
+	      {
+		 stop = true;
+		 println("[+] stopping server...");
+		 println("[+] done.");
+		 return;
+	      }
 	      buf[bytes] = '\0';
 	      std::string cmd = buf;
 	      // std::cout << "[+] received command: " << cmd << std::endl;
@@ -94,7 +104,12 @@ namespace qx
 	      if (words[0] == "stop")
 	      {
 		 //sock->send("[+] stopping server...\n", 23);
-		 sock->send("OK\n", 3);
+		 try
+		 {
+		    sock->send("OK\n", 3);
+		 } catch (xpu::socket_exception)
+		 {
+		 }
 		 println("[+] stopping server...");
 		 println("[+] done.");
 		 return;
@@ -102,13 +117,40 @@ namespace qx
 	      else if (words[0] == "circuits")
 	      {
 		 std::string response = int_to_str(circuits.size())+" circuit(s) found: ";
-		 sock->send(response.c_str(),response.length());
+		 try
+		 {
+		    sock->send(response.c_str(),response.length());
+		 } catch (xpu::socket_exception)
+		 {
+		    stop = true;
+		    println("[+] stopping server...");
+		    println("[+] done.");
+		    return;
+		 }
 		 for (int i=0; i<circuits.size(); ++i)
 		 {
-		    sock->send(circuits[i]->id().c_str(), circuits[i]->id().length());
-		    sock->send(", ", 2);
+		    try
+		    {
+		       sock->send(circuits[i]->id().c_str(), circuits[i]->id().length());
+		       sock->send(", ", 2);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
-		 sock->send("\n", 1);
+		 try
+		 {
+		    sock->send("\n", 1);
+		 } catch (xpu::socket_exception)
+		 {
+		    stop = true;
+		    println("[+] stopping server...");
+		    println("[+] done.");
+		    return;
+		 }
 		 continue;
 	      }
 	      else if (words[0] == "reset")
@@ -121,7 +163,16 @@ namespace qx
 		    delete circuits[i];
 		 circuits.clear();
 		 println("[+] reset done.");
-		 sock->send("OK\n", 3);
+		 try
+		 {
+		    sock->send("OK\n", 3);
+		 } catch (xpu::socket_exception)
+		 {
+		    stop = true;
+		    println("[+] stopping server...");
+		    println("[+] done.");
+		    return;
+		 }
 		 continue;
 	      }
 	      else if (words[0] == "reset_measurement_averaging")
@@ -129,18 +180,45 @@ namespace qx
 		 if (qubits_count == 0)
 		 {
 		    std::string error_code = "E"+int_to_str(QX_ERROR_QUBITS_NOT_YET_DEFINED)+"\n";
-		    sock->send(error_code.c_str(), error_code.length()+1);
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
 		 else if (words.size() != 1)
 		 {
 		    std::string error_code = "E"+int_to_str(QX_ERROR_MALFORMED_CMD)+"\n";
-		    sock->send(error_code.c_str(), error_code.length()+1);
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
 		 else
 		 {
 		       qx::qu_register& r = *reg;
 		       r.reset_measurement_averaging();
-		       sock->send("OK\n", 3);
+		       try
+		       {
+			  sock->send("OK\n", 3);
+		       } catch (xpu::socket_exception)
+		       {
+			  stop = true;
+			  println("[+] stopping server...");
+			  println("[+] done.");
+			  return;
+		       }
 		 }
 		 continue;
 	      } 
@@ -149,12 +227,30 @@ namespace qx
 		 if (qubits_count == 0)
 		 {
 		    std::string error_code = "E"+int_to_str(QX_ERROR_QUBITS_NOT_YET_DEFINED)+"\n";
-		    sock->send(error_code.c_str(), error_code.length()+1);
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
 		 else if (words.size() != 2)
 		 {
 		    std::string error_code = "E"+int_to_str(QX_ERROR_MALFORMED_CMD)+"\n";
-		    sock->send(error_code.c_str(), error_code.length()+1);
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
 		 else
 		 {
@@ -163,13 +259,24 @@ namespace qx
 		    double gs = r.measurement_averaging[q].ground_states;
 		    double es = r.measurement_averaging[q].exited_states;
 		    double avg = ((es+gs) != 0. ? (gs/(es+gs)) : 0.);
+		    #ifdef __debug__
 		    println("[+] measurement averaging of qubit " << q << " : " << avg);
+		    #endif
 		    std::stringstream ss;
 		    ss << std::fixed << std::setw(7) << avg;
 		    ss << '\n';
 		    std::string s = ss.str();
-		    sock->send(s.c_str(),s.length());
-		    sock->send("OK\n", 3);
+		    try
+		    {
+		       sock->send(s.c_str(),s.length());
+		       sock->send("OK\n", 3);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
 		 continue;
 	      } 
@@ -178,17 +285,37 @@ namespace qx
 		 if (qubits_count == 0)
 		 {
 		    std::string error_code = "E"+int_to_str(QX_ERROR_QUBITS_NOT_YET_DEFINED)+"\n";
-		    sock->send(error_code.c_str(), error_code.length()+1);
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
 		 else if (words.size() != 2)
 		 {
 		    std::string error_code = "E"+int_to_str(QX_ERROR_MALFORMED_CMD)+"\n";
-		    sock->send(error_code.c_str(), error_code.length()+1);
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
 		 else
 		 {
 		    qx::circuit * c = 0;
+		    #ifdef __debug__
 		    println("[+] trying to execute '" << words[1] << "'");
+		    #endif
 		    for (int i=0; i<circuits.size(); ++i)
 		    {
 		       if (words[1] == circuits[i]->id())
@@ -199,13 +326,31 @@ namespace qx
 		       qx::qu_register& r = *reg;
 		       // c->dump();
 		       c->execute(r);
-		       sock->send("OK\n", 3);
+		       try
+		       {
+			  sock->send("OK\n", 3);
+		       } catch (xpu::socket_exception)
+		       {
+			  stop = true;
+			  println("[+] stopping server...");
+			  println("[+] done.");
+			  return;
+		       }
 		    }
 		    else 
 		    {
 		       println("[!] circuit not found !");
 		       std::string error_code = "E"+int_to_str(QX_ERROR_CIRCUIT_NOT_FOUND)+"\n";
-		       sock->send(error_code.c_str(), error_code.length()+1);
+		       try
+		       {
+			  sock->send(error_code.c_str(), error_code.length()+1);
+		       } catch (xpu::socket_exception)
+		       {
+			  stop = true;
+			  println("[+] stopping server...");
+			  println("[+] done.");
+			  return;
+		       }
 		    }
 		 }
 		 continue;
@@ -215,12 +360,30 @@ namespace qx
 		 if (qubits_count == 0)
 		 {
 		    std::string error_code = "E"+int_to_str(QX_ERROR_QUBITS_NOT_YET_DEFINED)+"\n";
-		    sock->send(error_code.c_str(), error_code.length()+1);
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		 }
 		 }
 		 else if ((words.size() != 4) && (words.size() != 5))
 		 {
 		    std::string error_code = "E"+int_to_str(QX_ERROR_MALFORMED_CMD)+"\n";
-		    sock->send(error_code.c_str(), error_code.length()+1);
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
 		 }
 		 // else if (words.size() == 4)
 		 else 
@@ -240,12 +403,23 @@ namespace qx
 		       if (words[2] != "depolarizing_channel" )
 		       {
 			  std::string error_code = "E"+int_to_str(QX_ERROR_UNKNOWN_ERROR_MODEL)+"\n";
-			  sock->send(error_code.c_str(), error_code.length()+1);
+			  try
+			  {
+			     sock->send(error_code.c_str(), error_code.length()+1);
+			  } catch (xpu::socket_exception)
+			  {
+			     stop = true;
+			     println("[+] stopping server...");
+			     println("[+] done.");
+			     return;
+			  }
 		       }
 		       else
 		       {
 			  double error_probability = atof(words[3].c_str());
+			  #ifdef __debug__
 			  println("[+] executing '" << words[1] << "' (" << iterations << " iterations) under depolarizing noise...");
+			  #endif // __debug__
 			  qx::qu_register& r = *reg;
 			  qx::depolarizing_channel dch(c, r.size(), error_probability);
 			  while (iterations--)
@@ -253,16 +427,39 @@ namespace qx
 			     // println("[+] execution of '" << words[1] << "' under depolarizing noise...");
 			     qx::circuit * nc = dch.inject(false);
 			     nc->execute(r);
+			     nc->clear();
 			  }
+			  #ifdef __debug__
 			  println("[+] done.");
-			  sock->send("OK\n", 3);
+			  #endif
+			  try
+			  {
+			     sock->send("OK\n", 3);
+			  } catch (xpu::socket_exception)
+			  {
+			     stop = true;
+			     println("[+] stopping server...");
+			     println("[+] done.");
+			     return;
+			  }
 		       }
 		    }
 		    else 
 		    {
+		       #ifdef __debug__
 		       println("[!] circuit not found !");
+		       #endif
 		       std::string error_code = "E"+int_to_str(QX_ERROR_CIRCUIT_NOT_FOUND)+"\n";
-		       sock->send(error_code.c_str(), error_code.length()+1);
+		       try
+		       {
+			  sock->send(error_code.c_str(), error_code.length()+1);
+		       } catch (xpu::socket_exception)
+		       {
+			  stop = true;
+			  println("[+] stopping server...");
+			  println("[+] done.");
+			  return;
+		       }
 		    }
 		 }
 		 continue;
@@ -280,7 +477,16 @@ namespace qx
 		    if (res)
 		    {
 		       std::string error_code = "E"+int_to_str(res)+"\n";
-		       sock->send(error_code.c_str(), error_code.length()+1);
+		       try
+		       {
+			  sock->send(error_code.c_str(), error_code.length()+1);
+		       } catch (xpu::socket_exception)
+		       {
+			  stop = true;
+			  println("[+] stopping server...");
+			  println("[+] done.");
+			  return;
+		       }
 		       cmd_error = true;
 		    }
 		    // else 
@@ -291,14 +497,34 @@ namespace qx
 	      }
 	      else
 	      {
-	      int32_t res = process_line(cmd);
-	      if (res)
-	      {
-		 std::string error_code = "E"+int_to_str(res)+"\n";
-		 sock->send(error_code.c_str(), error_code.length()+1);
-	      }
-	      else 
-		 sock->send("OK\n", 3);
+		 int32_t res = process_line(cmd);
+		 if (res)
+		 {
+		    std::string error_code = "E"+int_to_str(res)+"\n";
+		    try
+		    {
+		       sock->send(error_code.c_str(), error_code.length()+1);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
+		 }
+		 else 
+		 {
+		    try
+		    {
+		       sock->send("OK\n", 3);
+		    } catch (xpu::socket_exception)
+		    {
+		       stop = true;
+		       println("[+] stopping server...");
+		       println("[+] done.");
+		       return;
+		    }
+		 }
 	      }
 	   }
 	   return;
@@ -478,7 +704,9 @@ namespace qx
 		  delete circuits[index];
 		  circuits.erase(circuits.begin()+index);
 	       }
+	       #ifdef __debug__
 	       println("[!] warning : circuit '" << name << "' reinitialized !");
+	       #endif 
 	       // println("label : new circuit '" << line << "' created.");
 	       circuits.push_back(new qx::circuit(qubits_count, line.substr(1)));
 	       return 0;
@@ -493,23 +721,55 @@ namespace qx
 	    {
 	       // current_sub_circuit(qubits_count)->add(new qx::display());
 	       std::string qstate = reg->quantum_state();
-	       sock->send(qstate.c_str(), qstate.length());
+	       try
+	       {
+		  sock->send(qstate.c_str(), qstate.length());
+	       } catch (xpu::socket_exception)
+	       {
+		 println("[+] stopping server...");
+		 println("[+] done.");
+		 return 1;
+	       }
 	    }
 	    else if (words[0] == "display_binary")
 	    {
 	       // current_sub_circuit(qubits_count)->add(new qx::display(true));
 	       std::string breg = reg->binary_register();
-	       sock->send(breg.c_str(), breg.length());
+	       try
+	       {
+		  sock->send(breg.c_str(), breg.length());
+	       } catch (xpu::socket_exception)
+	       {
+		  println("[+] stopping server...");
+		  println("[+] done.");
+		  return 1;
+	       }
 	    }
 	    else if (words[0] == "get_quantum_state")   // equivalent to display (redundant !)
 	    {
 	       std::string qstate = reg->quantum_state();
-	       sock->send(qstate.c_str(), qstate.length());
+	       try
+	       {
+		  sock->send(qstate.c_str(), qstate.length());
+	       } catch (xpu::socket_exception)
+	       {
+		 println("[+] stopping server...");
+		 println("[+] done.");
+		 return 1;
+	       }
 	    }
 	    else if (words[0] == "get_measurements")   // equivalent to display_binary
 	    {
 	       std::string breg = reg->binary_register();
-	       sock->send(breg.c_str(), breg.length());
+	       try
+	       {
+		  sock->send(breg.c_str(), breg.length());
+	       } catch (xpu::socket_exception)
+	       {
+		 println("[+] stopping server...");
+		 println("[+] done.");
+		 return 1;
+	       }
 	    }
 	    else if (words[0] == "measure")
 	       current_sub_circuit(qubits_count)->add(new qx::measure());
@@ -896,6 +1156,23 @@ namespace qx
 	    print_syntax_error(" unknown gate or command !", QX_ERROR_UNKNOWN_COMMAND);
 
 	 return 0;
+      }
+
+      public:
+
+      void stop()
+      {
+	 for (int i=0; i<circuits.size(); ++i)
+	    delete circuits[i];
+         circuits.clear();
+	 try 
+	 {
+
+	 }
+	 catch (xpu::socket_exception)
+	 {
+	    sock->cleanup();
+	 }
       }
 
       private:

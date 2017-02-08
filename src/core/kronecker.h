@@ -427,8 +427,8 @@ namespace qx
       {
 	 print("[ ");
 	 for (int i=0; i<v.size(); ++i)
-	    print(v[i].re << ", ");
-	    //print(v[i].real() << ", ");
+	    // print(v[i].re << ", ");
+	    print(v[i].real() << ", ");
 	 println(" ]");
 
       }
@@ -460,8 +460,8 @@ namespace qx
 	    for (int j=0; j<v.size(); j++)
 	    {
 	       x = k.get(i,j);
-	       //if ((x.real() != 0) || (x.imag() != 0))
-	       if ((x.re != 0) || (x.im != 0))
+	       if ((x.real() != 0) || (x.imag() != 0))
+	       //if ((x.re != 0) || (x.im != 0))
 	           s += v[j]*x;
 	    }
 	    r[i] = s;

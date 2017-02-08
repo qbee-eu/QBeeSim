@@ -7,8 +7,8 @@
 
 #include <iostream>
 
-#include <xpu.h>
-#include <xpu/runtime>
+//#include <xpu.h>
+//#include <xpu/runtime>
 
 #include <core/circuit.h>
 #include <qcode/quantum_code_loader.h>
@@ -41,14 +41,16 @@ int main(int argc, char **argv)
    if (argc == 3)
    {
       size_t ncpu = atoi(argv[2]);
+      /*
       ncpu = ((ncpu < 128) ? ncpu : 0);
       if (ncpu)
 	 xpu::init(ncpu);
       else
 	 xpu::init();
+       */
    }
-   else
-      xpu::init();
+   // else
+      // xpu::init();
 
    std::string file_name = argv[1];
 

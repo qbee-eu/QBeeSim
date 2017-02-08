@@ -2,6 +2,7 @@
 #define QX_DEPOLARIZING_CHANNEL_H
 
 #include <random>
+#include <ctime>
 #include <core/error_injector.h>
 
 namespace qx
@@ -26,7 +27,7 @@ namespace qx
         /**
 	 * ctor
 	 */
-        depolarizing_channel(qx::circuit * c, uint64_t nq, double pe) : nrg(0,__third__), c(c), nq(nq),
+        depolarizing_channel(qx::circuit * c, uint64_t nq, double pe) : nrg(clock(),__third__), c(c), nq(nq),
 							                pe(pe), 
 	                                                                xp(__third__), 
 							                yp(__third__), 
@@ -47,7 +48,6 @@ namespace qx
 	   z_errors = 0;
 	   y_errors = 0;
 
-	   srand48(xpu::timer().current());
 	   qx::circuit * noisy_c = new qx::circuit(nq,c->id() + "(noisy)");
 	}
         
@@ -55,7 +55,7 @@ namespace qx
 	/**
 	 * ctor
 	 */
-	depolarizing_channel(qx::circuit * c, uint64_t nq, double pe, double xp, double yp, double zp) : nrg(0,__third__), c(c), nq(nq), 
+	depolarizing_channel(qx::circuit * c, uint64_t nq, double pe, double xp, double yp, double zp) : nrg(clock(),__third__), c(c), nq(nq), 
 	                                                                                                 pe(pe), 
 											                 xp(xp), 
 											                 yp(yp), 
@@ -75,7 +75,6 @@ namespace qx
 	   z_errors = 0;
 	   y_errors = 0;
 
-	   srand48(xpu::timer().current());
 	   qx::circuit * noisy_c = new qx::circuit(nq,c->id() + "(noisy)");
 	}
 
