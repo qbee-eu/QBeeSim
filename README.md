@@ -1,4 +1,4 @@
-# QBeeSim Simulator
+# QX Simulator
 
 A universal quantum computer simulator.
 
