@@ -1,4 +1,4 @@
-# QX Simulator
+# QBeeSim Simulator
 
 A universal quantum computer simulator.
 
@@ -11,7 +11,7 @@ A universal quantum computer simulator.
 
 # QXelerator Installation
 
-QXelerator is the python interface to QX simulator, which is perhaps the most easiest way to start simulating quantum circuits. Python binary wheels are available which can be used to setup QXelerator by following the instructions in [README.md](qxelarator/README.md) available in the qxelerator directory.
+QXelerator or QBeeSim is the python interface to QBeeSim simulator, which is perhaps the most easiest way to start simulating quantum circuits. Python binary wheels are available which can be used to setup QXelerator by following the instructions in [README.md](qxelarator/README.md) available in the qxelerator directory.
 
 
 # Required Packages
@@ -55,6 +55,6 @@ cmake -DCMAKE_INSTALL_PREFIX=<desired_absolute_path>
 
 # Licensing
 
-QX is licensed under the Apache License, Version 2.0. See
+QBeeSim is licensed under the Apache License, Version 2.0. See
 [LICENSE](https://github.com/QE-Lab/qx-simulator/blob/master/LICENSE) for the full
 license text.
